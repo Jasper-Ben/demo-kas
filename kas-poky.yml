@@ -1,0 +1,57 @@
+header:
+  version: 9
+
+distro: "poky"
+
+defaults:
+  repos:
+    patches:
+      repo: "this"
+
+repos:
+  this:
+    path: ""
+
+  poky:
+    url: "https://git.yoctoproject.org/git/poky"
+    refspec: "dunfell"
+    layers:
+      meta:
+      meta-poky:
+    patches:
+      001-fixup-repo-fetcher:
+        path: "patches/0001-Repo-fetcher-improvements.patch"
+  meta-openembedded:
+    url: "https://git.openembedded.org/meta-openembedded"
+    refspec: "dunfell"
+    layers:
+      meta-oe:
+    patches:
+      add-repo-recipe:
+        path: "patches/0001-Add-recipe-for-repo-2.16.7.patch"
+  meta-demo:
+    path: "meta-demo"
+
+bblayers_conf_header:
+  standard: |
+    POKY_BBLAYERS_CONF_VERSION = "2"
+    BBPATH = "${TOPDIR}"
+    BBFILES ?= ""
+
+local_conf_header:
+  standard: |
+    CONF_VERSION = "1"
+
+  package_ipk: |
+    PACKAGE_CLASSES ?= "package_ipk"
+
+  diskmon: |
+    BB_DISKMON_DIRS = "\
+      STOPTASKS,${TMPDIR},1G,100K \
+      STOPTASKS,${DL_DIR},1G,100K \
+      STOPTASKS,${SSTATE_DIR},1G,100K \
+      STOPTASKS,/tmp,100M,100K \
+      ABORT,${TMPDIR},100M,1K \
+      ABORT,${DL_DIR},100M,1K \
+      ABORT,${SSTATE_DIR},100M,1K \
+      ABORT,/tmp,10M,1K"
