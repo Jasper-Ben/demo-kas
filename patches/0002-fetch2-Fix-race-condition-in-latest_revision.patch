@@ -1,0 +1,32 @@
+From e101dbb0434920ff973b39c5074d3f0a5af506cb Mon Sep 17 00:00:00 2001
+From: Martin Koppehel <martin@mko.dev>
+Date: Thu, 4 Nov 2021 23:59:48 +0100
+Subject: [PATCH 2/2] fetch2: Fix race condition in latest_revision
+
+Setting latest_revision contained a race condition, where it would be
+set to an empty string, if the hash calculation function would take to
+long.
+
+Signed-off-by: Jasper Orschulko <Jasper.Orschulko@iris-sensing.com>
+---
+ lib/bb/fetch2/__init__.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/bitbake/lib/bb/fetch2/__init__.py b/bitbake/lib/bb/fetch2/__init__.py
+index 6a38cb09..9dc23d05 100644
+--- a/bitbake/lib/bb/fetch2/__init__.py
++++ b/bitbake/lib/bb/fetch2/__init__.py
+@@ -1602,7 +1602,9 @@ class FetchMethod(object):
+         try:
+             return revs[key]
+         except KeyError:
+-            revs[key] = rev = self._latest_revision(ud, d, name)
++            rev = self._latest_revision(ud, d, name)
++            if rev != '':
++                revs[key] = rev
+             return rev
+ 
+     def sortable_revision(self, ud, d, name):
+-- 
+2.33.1
+

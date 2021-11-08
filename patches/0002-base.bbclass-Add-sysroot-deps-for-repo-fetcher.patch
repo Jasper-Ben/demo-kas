@@ -1,0 +1,31 @@
+From b1b5d48ae3f6f28175eb244ed9fb6a3bc521dda4 Mon Sep 17 00:00:00 2001
+From: Jasper Orschulko <Jasper.Orschulko@iris-sensing.com>
+Date: Fri, 5 Nov 2021 14:03:34 +0100
+Subject: [PATCH 2/2] base.bbclass: Add sysroot deps for repo fetcher
+
+Add git-native and repo-native as prerequisite for the repo fetcher.
+
+Signed-off-by: Jasper Orschulko <Jasper.Orschulko@iris-sensing.com>
+---
+ meta/classes/base.bbclass | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/meta/classes/base.bbclass b/meta/classes/base.bbclass
+index a65fcc6c1d..3298bd1952 100644
+--- a/meta/classes/base.bbclass
++++ b/meta/classes/base.bbclass
+@@ -665,6 +665,11 @@ python () {
+         elif uri.scheme == "npm":
+             d.appendVarFlag('do_fetch', 'depends', ' nodejs-native:do_populate_sysroot')
+ 
++        elif uri.scheme == "repo":
++            needsrcrev = True
++            d.appendVarFlag('do_fetch', 'depends', ' repo-native:do_populate_sysroot')
++            d.appendVarFlag('do_fetch', 'depends', ' git-native:do_populate_sysroot')
++
+         # *.lz4 should DEPEND on lz4-native for unpacking
+         if path.endswith('.lz4'):
+             d.appendVarFlag('do_unpack', 'depends', ' lz4-native:do_populate_sysroot')
+-- 
+2.33.1
+

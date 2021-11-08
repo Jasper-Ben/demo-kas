@@ -14,21 +14,26 @@ repos:
 
   poky:
     url: "https://git.yoctoproject.org/git/poky"
-    refspec: "dunfell"
+    refspec: "master"
     layers:
       meta:
       meta-poky:
     patches:
-      001-fixup-repo-fetcher:
-        path: "patches/0001-Repo-fetcher-improvements.patch"
+      repo-recipe:
+        path: "patches/0001-repo-Add-recipe-for-2.17.3.patch"
+      repo-sysroot:
+        path: "patches/0002-base.bbclass-Add-sysroot-deps-for-repo-fetcher.patch"
+      repo-fetcher:
+        path: "patches/0001-fetch2-repo-Implement-AUTOREV-for-repo-fetcher.patch"
+      fix-recursive-calls:
+        path: "patches/0002-fetch2-Fix-race-condition-in-latest_revision.patch"
+
   meta-openembedded:
     url: "https://git.openembedded.org/meta-openembedded"
-    refspec: "dunfell"
+    refspec: "master"
     layers:
       meta-oe:
-    patches:
-      add-repo-recipe:
-        path: "patches/0001-Add-recipe-for-repo-2.16.7.patch"
+
   meta-demo:
     path: "meta-demo"
 
@@ -40,7 +45,7 @@ bblayers_conf_header:
 
 local_conf_header:
   standard: |
-    CONF_VERSION = "1"
+    CONF_VERSION = "2"
 
   package_ipk: |
     PACKAGE_CLASSES ?= "package_ipk"
