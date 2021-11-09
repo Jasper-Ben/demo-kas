@@ -25,8 +25,6 @@ repos:
         path: "patches/0002-base.bbclass-Add-sysroot-deps-for-repo-fetcher.patch"
       repo-fetcher:
         path: "patches/0001-fetch2-repo-Implement-AUTOREV-for-repo-fetcher.patch"
-      fix-recursive-calls:
-        path: "patches/0002-fetch2-Fix-race-condition-in-latest_revision.patch"
 
   meta-openembedded:
     url: "https://git.openembedded.org/meta-openembedded"
